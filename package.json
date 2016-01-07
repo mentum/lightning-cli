@@ -1,0 +1,25 @@
+{
+  "name": "lightning-cli",
+  "version": "0.1.0",
+  "description": "lightning cli",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mentum/lightning-cli.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "preferGlobal": true,
+  "bugs": {
+    "url": "https://github.com/mentum/lightning-cli/issues"
+  },
+  "homepage": "https://github.com/mentum/lightning-cli#readme",
+  "bin": {
+    "lightning": "cli.js"
+  },
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
+}
