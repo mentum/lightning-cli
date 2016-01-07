@@ -1,8 +1,10 @@
 #! /usr/bin/env node
 
-console.log('contents of the actual repo');
+var program = require('commander');
 
-var exec = require('child_process').exec;
-var child = exec('ls -a', function(err, stdout, stderr) {
-  console.log(stdout);
-});
+program
+  .version('0.1.0')
+  .option('-u, --url [value]', 'url to scan')
+  .parse(process.argv);
+
+console.log('piping scan of %s to phantomas', program.url);
