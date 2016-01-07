@@ -20,6 +20,7 @@
     "lightning": "./bin/cli.js"
   },
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "^2.9.0",
+    "phantomas": "^1.13.0"
   }
 }
