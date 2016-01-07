@@ -5,11 +5,23 @@ var program = require('commander');
 var path = require('path');
 var pkg = require(path.join(__dirname, '../package.json'));
 
-var scan = require('../lib/PhantomasWrapper.js').scan;
+var lightning = require('../lib/lightning.js');
 
 program
   .version(pkg.version)
-  .option('-u, --url <url>', 'url to scan')
+  .description('Lightning for developers')
+  .arguments('<url>')
+  .action(function (url) {
+    // TODO validate url with regex
+
+    // TODO Extract this and make it generic
+    var options = {};
+    options.verbose = !!program.verbose;
+
+    if(url) lightning.scan(url, options);
+    // TODO handle errors gracefully
+  })
+  .option('-v, --verbose', 'Verbose output')
   .parse(process.argv);
 
-scan(program.url);
+if (!program.args.length) program.help();
