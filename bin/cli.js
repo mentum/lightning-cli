@@ -3,11 +3,13 @@
 var program = require('commander');
 
 var path = require('path');
-var pkg = require( path.join(__dirname, '../package.json') );
+var pkg = require(path.join(__dirname, '../package.json'));
+
+var scan = require('../lib/PhantomasWrapper.js').scan;
 
 program
   .version(pkg.version)
-  .option('-u, --url [value]', 'url to scan')
+  .option('-u, --url <url>', 'url to scan')
   .parse(process.argv);
 
-console.log('piping scan of %s to phantomas', program.url);
+scan(program.url);
