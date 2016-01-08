@@ -1,6 +1,8 @@
 #! /usr/bin/env node
 
 var program = require('commander');
+var request = require('request');
+var API_GATEWAY_URL = 'https://lbqynnnm91.execute-api.us-east-1.amazonaws.com/lightning/scan';
 
 var path = require('path');
 var pkg = require(path.join(__dirname, '../package.json'));
@@ -13,13 +15,13 @@ program
   .arguments('<url>')
   .action(function (url) {
     // TODO validate url with regex
-
-    // TODO Extract this and make it generic
-    var options = {};
-    options.verbose = !!program.verbose;
-
-    if(url) lightning.scan(url, options);
-    // TODO handle errors gracefully
+    request.post({url: API_GATEWAY_URL, json: {url: url}}, function (err, httpResponse, body) {
+      // TODO handle errors gracefully
+      if (err) {
+        return console.error('error: ', err);
+      }
+      console.log('your data:', body);
+    });
   })
   .option('-v, --verbose', 'Verbose output')
   .parse(process.argv);
