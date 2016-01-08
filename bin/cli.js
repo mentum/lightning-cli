@@ -7,8 +7,6 @@ var API_GATEWAY_URL = 'https://lbqynnnm91.execute-api.us-east-1.amazonaws.com/li
 var path = require('path');
 var pkg = require(path.join(__dirname, '../package.json'));
 
-var lightning = require('../lib/lightning.js');
-
 program
   .version(pkg.version)
   .description('Lightning for developers')
