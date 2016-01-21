@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/mentum/lightning-cli#readme",
   "bin": {
-    "lightning": "./bin/cli.js"
+    "lightning": "./bin/lightning"
   },
   "dependencies": {
     "commander": "^2.9.0",
