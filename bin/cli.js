@@ -11,7 +11,7 @@ var pkg = require(path.join(__dirname, '../package.json'));
 function callLightningTask(url) {
   var requestOptions = {
     json: {url: url}
-  }
+  };
 
   request.post(LIGHTNING_TASK_URL, requestOptions, function (err, httpResponse, body) {
       // TODO handle errors gracefully
@@ -28,7 +28,6 @@ program
   .description('Lightning for developers')
   .arguments('<url>')
   .action(callLightningTask)
-  .option('-v, --verbose', 'Verbose output')
   .parse(process.argv);
 
 if (!program.args.length) program.help();
