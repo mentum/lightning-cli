@@ -1,8 +1,11 @@
 {
   "name": "lightning-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "lightning cli",
-  "keywords": ["lightning", "lightning-cli"],
+  "keywords": [
+    "lightning",
+    "lightning-cli"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,10 +14,11 @@
     "url": "git+https://github.com/mentum/lightning-cli.git"
   },
   "author": "mentum",
-  "contributors": [{
-    "name": "François-Xavier P. Darveau",
-    "email": "fpdarveau@mentum.io"
-  },
+  "contributors": [
+    {
+      "name": "François-Xavier P. Darveau",
+      "email": "fpdarveau@mentum.io"
+    },
     {
       "name": "Olivier Sylvain",
       "email": "osylvain@mentum.io"
