@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-const LIGHTNING_WEBAPP_BASE_URL = 'http://http://osylvain.github.io/lightning/'
+const LIGHTNING_WEBAPP_BASE_URL = 'http://osylvain.github.io/lightning/'
 const LIGHTNING_TASK_URL        = 'https://v8acs2yqh4.execute-api.us-east-1.amazonaws.com/prod/scan';
 
 var program = require('commander'),
@@ -27,9 +27,11 @@ function callLightningTask(url) {
       if (err) return console.error('Oups, somethig went wrong while scanning ...', err.message)
       else if(body.message == 'Endpoint request timed out') { // API GATEWAY TIMES OUT AFTER 10 seconds
         outputSuccessMessage('Perf scan not complete yet, your results will likely be available at ' + LIGHTNING_WEBAPP_BASE_URL + ' in less than a minute');
-      } else if(body.scanResultsURL) {
+      } else if(body.metrics) {
         outputSuccessMessage('Perf scan complete, go check your results at ' + LIGHTNING_WEBAPP_BASE_URL);
-        // TODO : display data line by line
+        for (metric in body.metrics) {
+          console.log(metric, ' : ', body.metrics[metric]);
+        }
       } 
     });
 }
