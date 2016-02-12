@@ -1,7 +1,12 @@
-var Q = require('q');
+var request = require('request'),
+    Q       = require('q');
 
-const LIGHTNING_TASK_URL        = 'https://v8acs2yqh4.execute-api.us-east-1.amazonaws.com/prod/scan';
+const API_GATEWAY_TIMEOUT = 'Endpoint request timed out';
 
+const LIGHTNING_SCHEDULE_URL = 'https://v8acs2yqh4.execute-api.us-east-1.amazonaws.com/prod/scans/scheduled';
+const LIGHTNING_TASK_URL = 'https://v8acs2yqh4.execute-api.us-east-1.amazonaws.com/prod/scan';
+
+//TODO validate arguments
 module.exports.scan = function (targetUrl) {
   var deferred = Q.defer();
 
@@ -10,16 +15,33 @@ module.exports.scan = function (targetUrl) {
   };
 
   request.post(LIGHTNING_TASK_URL, requestOptions, function (err, httpResponse, body) {
-    if (err) return console.error('Oups, somethig went wrong while scanning ...', err.message)
-    else if (body.message == 'Endpoint request timed out') { // API GATEWAY TIMES OUT AFTER 10 seconds
-      outputSuccessMessage('Perf scan not complete yet, your results will likely be available at ' + LIGHTNING_WEBAPP_BASE_URL + ' in less than a minute');
-    } else if (body.metrics) {
-      outputSuccessMessage('Perf scan complete, go check your results at ' + LIGHTNING_WEBAPP_BASE_URL);
-      for (metric in body.metrics) {
-        console.log(metric, ' : ', body.metrics[metric]);
-      }
-    }
+    if (err) deferred.reject(err.message);
+    else if (body.message && body.message != API_GATEWAY_TIMEOUT) deferred.reject(body.message);
+    else if (body.message == API_GATEWAY_TIMEOUT) { // API GATEWAY TIMES OUT AFTER 10 seconds
+      deferred.resolve({message: "Scan completed, but no data available", metrics: {}});
+    } else if (body.metrics) deferred.resolve({message: "Scan completed", metrics: body.metrics});
   });
-}
-}
-;
+
+  return deferred.promise;
+};
+
+//TODO validate arguments
+module.exports.schedule = function (targetUrl, interval, startTime) {
+  var deferred = Q.defer();
+
+  var requestOptions = {
+    json: {
+      url: targetUrl,
+      period: interval,
+      nextRun: startTime
+    }
+  };
+
+  request.post(LIGHTNING_SCHEDULE_URL, requestOptions, function (err, httpResponse, body) {
+    if (err) deferred.reject(err.message);
+    else if (body.message) deferred.reject(body.message);
+    else deferred.resolve(requestOptions.json);
+  });
+
+  return deferred.promise;
+};
