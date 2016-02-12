@@ -1,3 +1,2 @@
-/**
- * Created by eff_it on 2016-02-12.
- */
+// Convenience file to require the SDK from root
+module.exports = require('./lightning/lightning');
