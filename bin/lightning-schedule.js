@@ -10,8 +10,6 @@ const LIGHTNING_SCHEDULE_URL  = 'https://v8acs2yqh4.execute-api.us-east-1.amazon
 const A_DAY_IN_MILLISECONDS   = moment.duration(1, 'days').asMilliseconds();
 const UTC_NOW_TIMESTAMP       = parseInt(moment.utc().format('x')); //in milliseconds
 
-////  TODO post to lightning schedule endpoint
-////  POST https://amazon-api-gateway-shitty-url-stuff-gay/scans/schedule
 function scheduleScan(targetUrl) {
   if (!targetUrl || typeof targetUrl != "string") console.log('a valid target URL needs to be specified');
   else {
