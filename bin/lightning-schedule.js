@@ -6,7 +6,7 @@ var program = require('commander'),
 
 var outputSuccessMessage = require('../lightning/output').outputSuccessMessage;
 
-const LIGHTNING_SCHEDULE_URL  = 'https://v8acs2yqh4.execute-api.us-east-1.amazonaws.com/prod/scheduled';
+const LIGHTNING_SCHEDULE_URL  = 'https://v8acs2yqh4.execute-api.us-east-1.amazonaws.com/prod/scans/scheduled';
 const A_DAY_IN_MILLISECONDS   = moment.duration(1, 'days').asMilliseconds();
 const UTC_NOW_TIMESTAMP       = parseInt(moment.utc().format('x')); //in milliseconds
 
@@ -26,7 +26,6 @@ function scheduleScan(targetUrl) {
     request.post(LIGHTNING_SCHEDULE_URL, requestOptions, function (err, httpResponse, body){
       if (err) console.log('an error occurred with your scheduling');
       else {
-        console.log(body);
         outputSuccessMessage(targetUrl + ' will be scanned every ' + program.interval  + ' starting ' + program.start);
       }
     })
