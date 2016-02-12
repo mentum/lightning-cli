@@ -10,7 +10,16 @@ npm install -g lightning-cli
 
 ## Usage
 
+#### Immediate scan
 ```
-lightning <url>
+lightning scan <url>
 ```
 _url_: valid url of the website you want to be analyzed.
+
+#### Schedule a recurring scan
+```
+lightning schedule <url> --interval --start
+```
+_url_: valid url of the website you want to be analyzed.
+_--interval_: A time interval in milliseconds. Defaults to one day
+_--start_: A milliseconds timestamp specifying when the scanning starts. Defaults to now + interval
