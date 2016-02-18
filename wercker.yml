@@ -1,11 +1,19 @@
 box: node
 
+build:
+  steps:
+    - script:
+      name: echo
+      code: |
+        echo Lightning fast
+        cat ~/package.json
+
 deploy:
   steps:
     - script:
       name: publish to npm
-        code: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-          echo logged in as:
-          npm whoami
-          npm publish
+      code: |
+        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+        echo logged in as:
+        npm whoami
+        npm publish
