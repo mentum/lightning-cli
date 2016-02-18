@@ -1,0 +1,11 @@
+box: node
+
+deploy:
+  steps:
+    - script:
+      name: publish to npm
+        code: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          echo logged in as:
+          npm whoami
+          npm publish
