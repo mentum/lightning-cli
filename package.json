@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "commander": "^2.9.0",
+    "moment": "^2.11.2",
     "q": "^1.4.1",
     "request": "^2.67.0"
   }
