@@ -5,7 +5,7 @@ var program = require('commander');
 var lightning = require('../');
 var outputSuccessMessage = require('./output').outputSuccessMessage;
 
-const LIGHTNING_WEBAPP_BASE_URL = 'http://osylvain.github.io/lightning/';
+const LIGHTNING_WEBAPP_BASE_URL = 'http://mentum.github.io/lightning/';
 
 function immediateScan(targetUrl) {
   if (!targetUrl || typeof targetUrl != "string") console.log('a valid target URL needs to be specified');

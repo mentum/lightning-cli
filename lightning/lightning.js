@@ -3,8 +3,8 @@ var request = require('request'),
 
 const API_GATEWAY_TIMEOUT = 'Endpoint request timed out';
 
-const LIGHTNING_SCHEDULE_URL = 'https://v8acs2yqh4.execute-api.us-east-1.amazonaws.com/prod/scans/scheduled';
-const LIGHTNING_TASK_URL = 'https://v8acs2yqh4.execute-api.us-east-1.amazonaws.com/prod/scan';
+const LIGHTNING_SCHEDULE_URL = 'https://nsflshddgh.execute-api.us-east-1.amazonaws.com/prod/scans/scheduled';
+const LIGHTNING_TASK_URL = 'https://nsflshddgh.execute-api.us-east-1.amazonaws.com/prod/scan';
 
 //TODO validate arguments
 module.exports.scan = function (targetUrl) {
