@@ -6,7 +6,7 @@ build:
       name: echo
       code: |
         echo Lightning fast
-        cat ~/package.json
+        cat package.json
 
 deploy:
   steps:
