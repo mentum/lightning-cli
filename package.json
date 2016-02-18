@@ -1,6 +1,6 @@
 {
   "name": "lightning-cli",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "lightning cli",
   "keywords": [
     "lightning",
@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "commander": "^2.9.0",
+    "q": "^1.4.1",
     "request": "^2.67.0"
   }
 }

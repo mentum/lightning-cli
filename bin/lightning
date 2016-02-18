@@ -1,48 +1,14 @@
 #! /usr/bin/env node
-
-const LIGHTNING_WEBAPP_BASE_URL = 'http://osylvain.github.io/lightning/'
-const LIGHTNING_TASK_URL        = 'https://v8acs2yqh4.execute-api.us-east-1.amazonaws.com/prod/scan';
-
 var program = require('commander'),
-    request = require('request'),
     path    = require('path');
-
-function outputSuccessMessage(resultMessage) {
-  console.log(' ');
-  console.log('  /|');
-  console.log(' / |__');
-  console.log('/_   /    ', resultMessage);
-  console.log('  | /');
-  console.log('  |/');;
-  console.log(' ');
-}
-
-function callLightningTask(url) {
-  var requestOptions = {
-    json: {url: url}
-  };
-
-  // TODO: wrap request in a promise and extract to a index.js module so lightning can be called by via node
-  request.post(LIGHTNING_TASK_URL, requestOptions, function (err, httpResponse, body) {
-      if (err) return console.error('Oups, somethig went wrong while scanning ...', err.message)
-      else if(body.message == 'Endpoint request timed out') { // API GATEWAY TIMES OUT AFTER 10 seconds
-        outputSuccessMessage('Perf scan not complete yet, your results will likely be available at ' + LIGHTNING_WEBAPP_BASE_URL + ' in less than a minute');
-      } else if(body.metrics) {
-        outputSuccessMessage('Perf scan complete, go check your results at ' + LIGHTNING_WEBAPP_BASE_URL);
-        for (metric in body.metrics) {
-          console.log(metric, ' : ', body.metrics[metric]);
-        }
-      } 
-    });
-}
 
 var pkg = require(path.join(__dirname, '../package.json'));
 
 program
   .version(pkg.version)
-  .description('Lightning for developers')
-  .arguments('<url>')
-  .action(callLightningTask)
+  .description('Lightning CLI')
+  .command('scan <url>', 'immediately scan a url')
+  .command('schedule <url> [interval] [start]', 'schedule a scan task to run')
   .parse(process.argv);
 
 if (!program.args.length) program.help();
