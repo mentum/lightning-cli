@@ -1,38 +1,33 @@
 #! /usr/bin/env node
 
-var program = require('commander'),
-    request = require('request');
+var program = require('commander');
 
-var outputSuccessMessage = require('../lightning/output').outputSuccessMessage;
+var lightning = require('../');
+var outputSuccessMessage = require('./output').outputSuccessMessage;
 
 const LIGHTNING_WEBAPP_BASE_URL = 'http://osylvain.github.io/lightning/';
-const LIGHTNING_TASK_URL        = 'https://v8acs2yqh4.execute-api.us-east-1.amazonaws.com/prod/scan';
 
 function immediateScan(targetUrl) {
   if (!targetUrl || typeof targetUrl != "string") console.log('a valid target URL needs to be specified');
   else {
     console.log('scanning ', targetUrl, ' ...');
-
-    var requestOptions = {
-      json: {url: targetUrl}
-    };
-
-    // TODO: wrap request in a promise and extract to a index.js module so lightning can be called by via node
-    request.post(LIGHTNING_TASK_URL, requestOptions, function (err, httpResponse, body) {
-      if (err) return console.error('Oups, somethig went wrong while scanning ...', err.message)
-      else if (body.message == 'Endpoint request timed out') { // API GATEWAY TIMES OUT AFTER 10 seconds
-        outputSuccessMessage('Perf scan not complete yet, your results will likely be available at ' + LIGHTNING_WEBAPP_BASE_URL + ' in less than a minute');
-      } else if (body.metrics) {
-        outputSuccessMessage('Perf scan complete, go check your results at ' + LIGHTNING_WEBAPP_BASE_URL);
-        for (metric in body.metrics) {
-          console.log(metric, ' : ', body.metrics[metric]);
+    lightning.scan(targetUrl)
+      .then(function(data){
+        if(data.metrics) {
+          outputSuccessMessage('Performance scan complete, go check your results at ' + LIGHTNING_WEBAPP_BASE_URL);
+          if(program.verbose) for (metric in data.metrics) console.log(metric, ' : ', data.metrics[metric]);
+        } else {
+          outputSuccessMessage('Performance scan not complete yet, your results will likely be available at ' + LIGHTNING_WEBAPP_BASE_URL + ' in less than a minute');
         }
-      }
-    });
+      })
+      .fail(function(message){
+        console.error('Oops, something went wrong while scanning ...', err.message)
+      });
   }
 }
 
 program
   .description('scan CLI')
   .action(immediateScan)
+  .option('--verbose')
   .parse(process.argv);
