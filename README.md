@@ -15,6 +15,7 @@ npm install -g lightning-cli
 lightning scan <url>
 ```
 _url_: valid url of the website you want to be analyzed.
+_--verbose_: A flag used to output result metrics
 
 #### Schedule a recurring scan
 ```

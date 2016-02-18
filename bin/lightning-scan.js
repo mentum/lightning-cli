@@ -14,14 +14,14 @@ function immediateScan(targetUrl) {
     lightning.scan(targetUrl)
       .then(function(data){
         if(data.metrics) {
-          outputSuccessMessage('Perf scan complete, go check your results at ' + LIGHTNING_WEBAPP_BASE_URL);
-          for (metric in data.metrics) console.log(metric, ' : ', data.metrics[metric]);
+          outputSuccessMessage('Performance scan complete, go check your results at ' + LIGHTNING_WEBAPP_BASE_URL);
+          if(program.verbose) for (metric in data.metrics) console.log(metric, ' : ', data.metrics[metric]);
         } else {
-          outputSuccessMessage('Perf scan not complete yet, your results will likely be available at ' + LIGHTNING_WEBAPP_BASE_URL + ' in less than a minute');
+          outputSuccessMessage('Performance scan not complete yet, your results will likely be available at ' + LIGHTNING_WEBAPP_BASE_URL + ' in less than a minute');
         }
       })
       .fail(function(message){
-        console.error('Oups, somethig went wrong while scanning ...', err.message)
+        console.error('Oops, something went wrong while scanning ...', err.message)
       });
   }
 }
@@ -29,4 +29,5 @@ function immediateScan(targetUrl) {
 program
   .description('scan CLI')
   .action(immediateScan)
+  .option('--verbose')
   .parse(process.argv);
