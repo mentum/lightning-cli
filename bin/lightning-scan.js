@@ -11,7 +11,7 @@ function immediateScan(targetUrl) {
   if (!targetUrl || typeof targetUrl != "string") console.log('a valid target URL needs to be specified');
   else {
     console.log('scanning ', targetUrl, ' ...');
-    lightning.scan(targetUrl)
+    lightning.scan(targetUrl, program.experimental)
       .then(function(data){
         if(data.metrics) {
           outputSuccessMessage('Performance scan complete, go check your results at ' + LIGHTNING_WEBAPP_BASE_URL);
@@ -30,4 +30,5 @@ program
   .description('scan CLI')
   .action(immediateScan)
   .option('--verbose')
+  .option('--experimental')
   .parse(process.argv);

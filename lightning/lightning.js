@@ -1,20 +1,21 @@
 var request = require('request'),
     Q       = require('q');
 
-const API_GATEWAY_TIMEOUT = 'Endpoint request timed out';
+const LIGHTNING_BASE_API_URL  = 'https://nsflshddgh.execute-api.us-east-1.amazonaws.com/';
+const API_GATEWAY_TIMEOUT     = 'Endpoint request timed out';
+const DEFAULT_API_VERSION     = 'prod';
+const SCHEDULE_ENDPOINT       = '/scans/scheduled';
+const SCAN_ENDPOINT           = '/scan';
 
-const LIGHTNING_SCHEDULE_URL = 'https://nsflshddgh.execute-api.us-east-1.amazonaws.com/prod/scans/scheduled';
-const LIGHTNING_TASK_URL = 'https://nsflshddgh.execute-api.us-east-1.amazonaws.com/prod/scan';
-
-//TODO validate arguments
-module.exports.scan = function (targetUrl) {
+module.exports.scan = function (targetUrl, experimental) {
   var deferred = Q.defer();
+  var scanUrl = LIGHTNING_BASE_API_URL + (experimental ? 'staging' : DEFAULT_API_VERSION) + SCAN_ENDPOINT;
 
   var requestOptions = {
     json: {url: targetUrl}
   };
 
-  request.post(LIGHTNING_TASK_URL, requestOptions, function (err, httpResponse, body) {
+  request.post(scanUrl, requestOptions, function (err, httpResponse, body) {
     if (err) deferred.reject(err.message);
     else if (body.message && body.message != API_GATEWAY_TIMEOUT) deferred.reject(body.message);
     else if (body.message == API_GATEWAY_TIMEOUT) { // API GATEWAY TIMES OUT AFTER 10 seconds
@@ -25,9 +26,9 @@ module.exports.scan = function (targetUrl) {
   return deferred.promise;
 };
 
-//TODO validate arguments
 module.exports.schedule = function (targetUrl, interval, startTime) {
   var deferred = Q.defer();
+  var scanUrl = LIGHTNING_BASE_API_URL + DEFAULT_API_VERSION + SCHEDULE_ENDPOINT;
 
   var requestOptions = {
     json: {
@@ -37,7 +38,7 @@ module.exports.schedule = function (targetUrl, interval, startTime) {
     }
   };
 
-  request.post(LIGHTNING_SCHEDULE_URL, requestOptions, function (err, httpResponse, body) {
+  request.post(scanUrl, requestOptions, function (err, httpResponse, body) {
     if (err) deferred.reject(err.message);
     else if (body.message) deferred.reject(body.message);
     else deferred.resolve(requestOptions.json);
