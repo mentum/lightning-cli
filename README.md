@@ -29,6 +29,6 @@ _--interval_: A time interval in milliseconds. Defaults to one day. Minimum valu
 
 _--start-stamp_: A milliseconds timestamp specifying when the scanning starts. Defaults to now + interval
 
-_--every_: An optional argument to set interval in a friendly way. Will override --interval. Example: --every 2-hours.
+_--every_: An optional argument to set interval in a friendly way. Will override --interval. Example: --every 2-hours. For more examples, refer to the (http://momentjs.com/docs/#/durations/)[moment.js duration doc]. Make sur to link number and unit by a - .
 
 _--start-date_: An optional ISO8601 formatted date specifying when the scanning starts. Will override --start-stamp Example: --start-date 2016-07-02
