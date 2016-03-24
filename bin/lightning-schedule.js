@@ -6,6 +6,7 @@ var program = require('commander'),
 
 var lightning = require('../');
 var outputSuccessMessage = require('./output').outputSuccessMessage;
+var ErrorMessages = require('../lightning/error-messages');
 
 const A_DAY_IN_MILLISECONDS = moment.duration(1, 'days').asMilliseconds();
 const FIVE_MINUTES_IN_MILLISECONDS = moment.duration(5, 'minutes').asMilliseconds();
@@ -13,41 +14,41 @@ const UTC_NOW_TIMESTAMP = parseInt(moment.utc().format('x')); //as milliseconds
 
 function parseMomentIntervalToTimestamp(momentInterval) {
   var durationArgs = momentInterval.split('-');
-  if (durationArgs.length != 2) throw new Error('badly formatted moment interval');
+  if (durationArgs.length != 2) throw new Error(ErrorMessages.INVALID_MOMENT_INTERVAL);
 
   durationArgs[0] = parseFloat(durationArgs[0]);
-  if (isNaN(durationArgs[0])) throw new Error('badly formatted moment interval');
+  if (isNaN(durationArgs[0])) throw new Error(ErrorMessages.INVALID_MOMENT_INTERVAL);
 
   return moment.duration.apply(this, durationArgs).asMilliseconds();
 }
 
 function parseIsoDateToTimestamp(isoDate) {
   var momentDate = moment(isoDate);
-  if (!momentDate.isValid()) throw new Error('badly formatted date');
+  if (!momentDate.isValid()) throw new Error(ErrorMessages.INVALID_DATE);
 
   return parseInt(momentDate.format('x')); //as milliseconds
 }
 
 function parseTimestamp(timestamp) {
   timestamp = parseInt(timestamp);
-  if (isNaN(timestamp)) throw new Error('Invalid timestamp');
+  if (isNaN(timestamp)) throw new Error(ErrorMessages.INVALID_TIMESTAMP);
 
   return timestamp;
 }
 
 function scheduleScan(targetUrl) {
-  if (!targetUrl || typeof targetUrl != "string" || !validUrl.isWebUri(targetUrl)) throw new Error('Invalid target url');
+  if (!targetUrl || typeof targetUrl != "string" || !validUrl.isWebUri(targetUrl)) throw new Error(ErrorMessages.INVALID_URL);
   var interval = program.every || program.interval || A_DAY_IN_MILLISECONDS;
   var start = program.startDate || program.startStamp || UTC_NOW_TIMESTAMP;
 
-  if (interval < FIVE_MINUTES_IN_MILLISECONDS) throw new Error('minimum interval is five minutes');
+  if (interval < FIVE_MINUTES_IN_MILLISECONDS) throw new Error(ErrorMessages.MINIMUM_INTERVAL_NOT_RESPECTED);
 
   lightning.schedule(targetUrl, interval, start)
     .then(function () {
       outputSuccessMessage(targetUrl + ' will be scanned every ' + (program.every || interval) + ' starting ' + (program.startDate || start));
     })
     .fail(function (message) {
-      console.log('an error occurred with your scheduling', message)
+      console.log(ErrorMessages.SCHEDULING_FAILED, message)
     })
 }
 
