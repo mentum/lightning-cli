@@ -36,6 +36,13 @@ function parseTimestamp(timestamp) {
   return timestamp;
 }
 
+function getFormattedSuccessMessage(targetUrl, interval, start) {
+  var humanInterval = moment.duration(interval).humanize();
+  var humanStartDate = moment(start).fromNow();
+
+  return targetUrl + ' will be scanned every ' + humanInterval + ' starting ' + humanStartDate;
+}
+
 function scheduleScan(targetUrl) {
   if (!targetUrl || typeof targetUrl != "string" || !validUrl.isWebUri(targetUrl)) throw new Error(ErrorMessages.INVALID_URL);
   var interval = program.every || program.interval || A_DAY_IN_MILLISECONDS;
@@ -45,7 +52,7 @@ function scheduleScan(targetUrl) {
 
   lightning.schedule(targetUrl, interval, start)
     .then(function () {
-      outputSuccessMessage(targetUrl + ' will be scanned every ' + (program.every || interval) + ' starting ' + (program.startDate || start));
+      outputSuccessMessage(getFormattedSuccessMessage(targetUrl, interval, start));
     })
     .fail(function (message) {
       console.log(ErrorMessages.SCHEDULING_FAILED, message)
