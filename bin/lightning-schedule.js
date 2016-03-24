@@ -1,7 +1,8 @@
 #! /usr/bin/env node
 
 var program = require('commander'),
-  moment = require('moment');
+  moment = require('moment'),
+  validUrl = require('valid-url');
 
 var lightning = require('../');
 var outputSuccessMessage = require('./output').outputSuccessMessage;
@@ -35,8 +36,7 @@ function parseTimestamp(timestamp) {
 }
 
 function scheduleScan(targetUrl) {
-  //TODO validate targetUrl is a url
-  if (!targetUrl || typeof targetUrl != "string") throw new Error('a valid target URL needs to be specified');
+  if (!targetUrl || typeof targetUrl != "string" || !validUrl.isWebUri(targetUrl)) throw new Error('Invalid target url');
   var interval = program.every || program.interval || A_DAY_IN_MILLISECONDS;
   var start = program.startDate || program.startStamp || UTC_NOW_TIMESTAMP;
 
