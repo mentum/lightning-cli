@@ -1,16 +1,16 @@
 #! /usr/bin/env node
 
-var program = require('commander'),
-  moment = require('moment'),
-  validUrl = require('valid-url');
+var program   = require('commander'),
+    moment    = require('moment'),
+    validUrl  = require('valid-url');
 
-var lightning = require('../');
-var outputSuccessMessage = require('./output').outputSuccessMessage;
-var ErrorMessages = require('../lightning/error-messages');
+var outputSuccessMessage  = require('./output').outputSuccessMessage;
+var ErrorMessages         = require('../lightning/error-messages');
+var lightning             = require('../');
 
-const A_DAY_IN_MILLISECONDS = moment.duration(1, 'days').asMilliseconds();
-const FIVE_MINUTES_IN_MILLISECONDS = moment.duration(5, 'minutes').asMilliseconds();
-const UTC_NOW_TIMESTAMP = parseInt(moment.utc().format('x')); //as milliseconds
+const FIVE_MINUTES_IN_MILLISECONDS  = moment.duration(5, 'minutes').asMilliseconds();
+const A_DAY_IN_MILLISECONDS         = moment.duration(1, 'days').asMilliseconds();
+const UTC_NOW_TIMESTAMP             = parseInt(moment.utc().format('x')); //as milliseconds
 
 function parseMomentIntervalToTimestamp(momentInterval) {
   var durationArgs = momentInterval.split('-');
@@ -51,12 +51,10 @@ function scheduleScan(targetUrl) {
   if (interval < FIVE_MINUTES_IN_MILLISECONDS) throw new Error(ErrorMessages.MINIMUM_INTERVAL_NOT_RESPECTED);
 
   lightning.schedule(targetUrl, interval, start)
-    .then(function () {
-      outputSuccessMessage(getFormattedSuccessMessage(targetUrl, interval, start));
-    })
+    .then(outputSuccessMessage.bind(this, getFormattedSuccessMessage(targetUrl, interval, start)))
     .fail(function (message) {
       console.log(ErrorMessages.SCHEDULING_FAILED, message)
-    })
+    });
 }
 
 try {
