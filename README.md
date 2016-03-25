@@ -1,6 +1,9 @@
 # lightning-cli
 
-Lightweight command line interface simplfying lightning usage.
+[![wercker status](https://app.wercker.com/status/cfca42b5bd800ff7eb8fb06e2b152b40/s/master "wercker status")](https://app.wercker.com/project/bykey/cfca42b5bd800ff7eb8fb06e2b152b40)
+
+Lightweight command line interface simplfying lightning usage
+
 
 ## Installation
 
